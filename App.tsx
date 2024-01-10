@@ -22,8 +22,8 @@ const App: React.FC = () => {
   return(
     <NavigationContainer>
       <ScreenStack.Navigator>
-        <ScreenStack.Screen name='Login' component={LoginScreen}/>
-        <ScreenStack.Screen name='Registration' component={RegistrationScreen}/>
+        <ScreenStack.Screen name='Login' component={LoginScreen} options={{headerShown: false}}/>
+        <ScreenStack.Screen name='Registration' component={RegistrationScreen} options={{headerShown: false}}/>
         <ScreenStack.Screen name='Home' component={HomeScreen}/>
         <ScreenStack.Screen name='Profile' component={ProfileScreen}/>
         <ScreenStack.Screen name='Settings' component={SettingsScreen}/>

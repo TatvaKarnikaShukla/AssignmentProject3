@@ -1,108 +1,126 @@
-import React, { useState } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import RootStackParamList from '../../types/RootStackParamList';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import React, {useState} from 'react';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {StyleSheet, View, Image, Text} from 'react-native';
 import InputTextComponent from '../components/InputTextComponent';
 import SubmitButtonComponent from '../components/SubmitButtonComponent';
+import RootStackParamList from '../../types/RootStackParamList';
+import assignmentStyle from '../styles/styles';
+import UserData from '../model/User';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
-    RootStackParamList,
-    'Login'
+  RootStackParamList,
+  'Login'
 >;
 
 interface LoginScreenProp {
-    navigation: LoginScreenNavigationProp
+  navigation: LoginScreenNavigationProp;
 }
 
-const LoginScreen: React.FC<LoginScreenProp> = ({ navigation }) => {
-    const [userNameValue, setUserName] = useState('')
-    const [password, setPassword] = useState('')
-    const [userError, setUserError] = useState(false)
-    const [userNameErrorMessage, setUserNameErrorMessage] = useState('')
-    const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
-    const [passwordError, setPasswordError] = useState(false);
+const LoginScreen: React.FC<LoginScreenProp> = ({navigation}) => {
+  const [userNameValue, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [userError, setUserError] = useState(false);
+  const [userNameErrorMessage, setUserNameErrorMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
 
-    const handleUserNameChange = (userName: string) => {
-        if(userName.length > 0)
-            setUserError(false)
-            setUserName(userName);
+  const handleUserNameChange = (userName: string) => {
+    if (userName.length > 0) {
+      setUserError(false);
+      setUserName(userName);
     }
-    const handlePasswordChange = (password: string) => {
-        setPassword(password);
-        setPasswordError(false);
+  };
+
+  const handlePasswordChange = (password: string) => {
+    setPassword(password);
+    setPasswordError(false);
+  };
+
+  const handleSubmitButtonClick = () => {
+    if (userNameValue.length === 0) {
+      setUserNameErrorMessage('*Username is required.');
+      setUserError(true);
+    } else if (password.length === 0) {
+      setPasswordError(true);
+      setPasswordErrorMessage('*Password is required.');
+    }else{
+        storeUserData()
     }
+  };
 
-    const handleSubmitButtonClick= () => {
-        if(userNameValue.length == 0){
-            setUserNameErrorMessage("*Username is required.")
-            setUserError(true)
-        }
-        else if (password.length == 0){
-            setPasswordError(true)
-            setPasswordErrorMessage("*Password is required.")
-        }
+  const storeUserData = () => {
+    const userData = new UserData(1,userNameValue,password,true)
+    storeUserObjectToLocal(userData);
+  }
+
+  const storeUserObjectToLocal = async(userData: UserData) => {
+    try {
+        await AsyncStorage.setItem("UserData", JSON.stringify(userData))
+        
+        console.log('Object stored successfully!');
+    } catch (error) {
+        console.error('Error storing object:', error);
     }
+  };
 
-    return (
-        <View style={loginScreenStyle.containerStyle}>
+  const handleRegisterLinkClick = () => {
+    navigation.navigate('Registration');
+  };
 
-            <Image
-                style= {loginScreenStyle.imageStyle}
-                source={require('../../android/app/src/main/res/mipmap-hdpi/ic_launcher.png')}
-            />
+  return (
+    <View style={assignmentStyle.containerStyle}>
+      <Image
+        style={assignmentStyle.logoImageStyle}
+        source={require('../../android/app/src/main/res/mipmap-hdpi/ic_launcher.png')}
+      />
 
-            <Text style={loginScreenStyle.titleTextStyle}>Login</Text>
+      <Text style={assignmentStyle.titleTextStyle}>Login</Text>
 
-            <InputTextComponent
-                label='Username'
-                value={userNameValue}
-                onChangeText={handleUserNameChange}
-                placeholder='Username'
-                secureTextEntry={false}
-                error={userError}
-            />
+      <InputTextComponent
+        label="Username"
+        value={userNameValue}
+        onChangeText={handleUserNameChange}
+        placeholder="Username"
+        secureTextEntry={false}
+        error={userError}
+      />
 
-            {userError ? (<Text style={{color:'red', marginStart: 10}}>{userNameErrorMessage}</Text>) : null}
+      {userError && (
+        <Text style={assignmentStyle.textInputErrorStyle}>
+          {userNameErrorMessage}
+        </Text>
+      )}
 
-            <InputTextComponent
-                label='Password'
-                value={password}
-                onChangeText={handlePasswordChange}
-                placeholder='Password'
-                secureTextEntry={true}
-                error= {passwordError}
-            />
+      <InputTextComponent
+        label="Password"
+        value={password}
+        onChangeText={handlePasswordChange}
+        placeholder="Password"
+        secureTextEntry={true}
+        error={passwordError}
+      />
 
-            {passwordError ? (<Text style={{color:'red', marginStart: 10}}>{passwordErrorMessage}</Text>) : null}
+      {passwordError && (
+        <Text style={assignmentStyle.textInputErrorStyle}>
+          {passwordErrorMessage}
+        </Text>
+      )}
 
+      <SubmitButtonComponent title="Login" onClick={handleSubmitButtonClick} />
 
-            <SubmitButtonComponent
-                title='Login'
-                onClick={handleSubmitButtonClick}
-            />
-        </View>
-    );
-}
-
-const loginScreenStyle = StyleSheet.create({
-    containerStyle:{
-        flex: 1,
-        justifyContent: 'center',
-        alignContent: 'center'
-    }, 
-    imageStyle: {
-        width: 80,
-        height: 80,
-        alignSelf: 'center',
-        marginBottom: 10
-    },
-    titleTextStyle: {
-        color: 'black',
-        fontSize: 24,
-        marginBottom: 40,
-        alignSelf: 'center',
-        fontWeight: 'bold',
-    }
-});
+      <View style={assignmentStyle.alignContentCenterStyle}>
+        <Text style={assignmentStyle.boldTextStyle}>
+          Not registered yet?{' '}
+          <Text
+            style={assignmentStyle.linkStyle}
+            onPress={handleRegisterLinkClick}>
+            Register here!
+          </Text>
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 export default LoginScreen;

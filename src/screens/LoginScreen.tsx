@@ -1,23 +1,12 @@
 import React, {useState} from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {View, Image, Text} from 'react-native';
 import InputTextComponent from '../components/InputTextComponent';
 import SubmitButtonComponent from '../components/SubmitButtonComponent';
-import RootStackParamList from '../../types/RootStackParamList';
 import assignmentStyle from '../styles/styles';
 import UserData from '../model/User';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type LoginScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Login'
->;
-
-interface LoginScreenProp {
-  navigation: LoginScreenNavigationProp;
-}
-
-const LoginScreen: React.FC<LoginScreenProp> = ({navigation}) => {
+const LoginScreen = (props: any) => {
   const [userNameValue, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [userError, setUserError] = useState(false);
@@ -57,16 +46,21 @@ const LoginScreen: React.FC<LoginScreenProp> = ({navigation}) => {
   const storeUserObjectToLocal = async(userData: UserData) => {
     try {
         await AsyncStorage.setItem("UserData", JSON.stringify(userData))
-        
         console.log('Object stored successfully!');
+        props.navigation.navigate('TabScreens');
     } catch (error) {
         console.error('Error storing object:', error);
     }
   };
 
   const handleRegisterLinkClick = () => {
-    navigation.navigate('Registration');
+    props.navigation.navigate('Registration');
   };
+
+  const handleForgotPasswordClick = () => {
+    props.navigation.navigate('ForgotPassword');
+  };
+
 
   return (
     <View style={assignmentStyle.containerStyle}>
@@ -108,6 +102,14 @@ const LoginScreen: React.FC<LoginScreenProp> = ({navigation}) => {
       )}
 
       <SubmitButtonComponent title="Login" onClick={handleSubmitButtonClick} />
+
+      <View style={assignmentStyle.alignContentCenterStyle}>
+        <Text style={[assignmentStyle.boldTextStyle, assignmentStyle.marginTopStyle, assignmentStyle.marginBottomStyle]}
+        onPress={handleForgotPasswordClick}>
+          Forgot password?{' '}
+          </Text>
+      </View>
+
 
       <View style={assignmentStyle.alignContentCenterStyle}>
         <Text style={assignmentStyle.boldTextStyle}>

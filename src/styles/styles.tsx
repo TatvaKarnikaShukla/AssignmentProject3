@@ -37,6 +37,9 @@ const assignmentStyle = StyleSheet.create({
   },
   marginTopStyle: {
     marginTop: 10
+  },
+  marginBottomStyle: {
+    marginBottom: 10
   }
 });
 

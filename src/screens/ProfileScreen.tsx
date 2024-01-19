@@ -1,7 +1,8 @@
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import RootStackParamList from '../../types/RootStackParamList';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
+import assignmentStyle from '../styles/styles';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -14,8 +15,9 @@ interface ProfileScreenProp {
 
 const ProfileScreen: React.FC<ProfileScreenProp> = ({navigation}) => { 
     return (
-        <SafeAreaView>
-            
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={assignmentStyle.boldTextStyle}>Profile screen</Text>
+
         </SafeAreaView>
     );
 }

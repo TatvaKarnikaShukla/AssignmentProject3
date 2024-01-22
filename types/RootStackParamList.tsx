@@ -9,7 +9,9 @@ type RootStackParamList = {
     Profile: undefined,
     Settings: undefined,
     TabScreens: undefined,
-    DrawerScreens: undefined
+    DrawerScreens: undefined,
+    PrivacyPolicy: undefined,
+    AboutPage: undefined
 }
 
 export default RootStackParamList;

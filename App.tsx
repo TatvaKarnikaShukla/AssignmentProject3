@@ -20,8 +20,17 @@ import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import RootStackParamList from './types/RootStackParamList';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {
+  DrawerContent,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerToggleButton,
+  createDrawerNavigator,
+} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import PrivacyPolicy from './src/screens/PrivacyPolicy';
+import AboutPage from './src/screens/AboutPage';
+import { Text, View } from 'react-native';
 
 const ScreenStack = createNativeStackNavigator<RootStackParamList>();
 const App: React.FC = () => {
@@ -59,53 +68,95 @@ const App: React.FC = () => {
 
   const AuthenticatedScreens = () => {
     return (
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName='DrawerScreens'>
         {/* <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Settings" component={SettingsScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Product" component={ProductScreen} />
         <Stack.Screen name="Cart" component={CartScreen} />
         <Stack.Screen name="Orders" component={OrderScreen} /> */}
-        <Stack.Screen name="TabScreens" component={TabScreens}  />
-        <Stack.Screen name="DrawerScreens" component={DrawerScreens} />
+        {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
+        <Stack.Screen name="DrawerScreens" component={DrawerScreens} options={{headerShown: false}}/>
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+        <Stack.Screen name="AboutPage" component={AboutPage} />
       </Stack.Navigator>
     );
   };
 
   const TabScreens = () => {
     return (
-      <Tab.Navigator 
-        initialRouteName='Home'
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
             let iconName;
 
             if (route.name === 'Home') {
-              iconName = focused
-                ? 'home'
-                : 'home-outline';
+              iconName = focused ? 'home' : 'home-outline';
             } else if (route.name === 'Settings') {
               iconName = focused ? 'settings' : 'settings-outline';
-            }else if (route.name === 'Profile') {
+            } else if (route.name === 'Profile') {
               iconName = focused ? 'person' : 'person-outline';
             }
 
-            return <Ionicons name={iconName ?? 'default-icon'} size={size} color={color} />;
+            return (
+              <Ionicons
+                name={iconName ?? 'default-icon'}
+                size={size}
+                color={color}
+              />
+            );
           },
           tabBarActiveTintColor: 'tomato',
           tabBarInactiveTintColor: 'gray',
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-        <Tab.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
-        <Tab.Screen name="Settings" component={SettingsScreen} options={{headerShown: false}}/>
+        })}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{headerShown: false}}
+        />
       </Tab.Navigator>
     );
   };
 
   const DrawerScreens = () => {
+    const DrawerHeaderContent = (props: any) => {
+      return (
+        <DrawerContentScrollView contentContainerStyle={{flex: 1}}>
+          <View
+            style={{
+              backgroundColor: '#4f4f4f',
+              height: 100,
+              justifyContent: 'center',
+              alignItems: 'center',
+              top: -5,
+            }}>
+            <Text style={{color: '#fff'}}>Home</Text>
+          </View>
+          <DrawerItemList {...props} />
+        </DrawerContentScrollView>
+      );
+    };
     return (
-      <Drawer.Navigator>
+      <Drawer.Navigator
+        drawerContent={props => DrawerHeaderContent(props)}
+        screenOptions={{
+          drawerPosition: 'left',
+          headerLeft: () => <DrawerToggleButton />,
+          headerTintColor: 'black',
+          headerShown: true,
+        }}>
+         <Drawer.Screen name='TabScreens' component={TabScreens} />
         <Drawer.Screen name="Product" component={ProductScreen} />
         <Drawer.Screen name="Cart" component={CartScreen} />
         <Drawer.Screen name="Orders" component={OrderScreen} />

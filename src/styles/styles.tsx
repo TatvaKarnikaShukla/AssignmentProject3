@@ -40,7 +40,33 @@ const assignmentStyle = StyleSheet.create({
   },
   marginBottomStyle: {
     marginBottom: 10
-  }
+  },
+  cardContainer: {
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    margin: 10,
+  },
+  cardImage: {
+    width: 100,
+    height: 100,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    resizeMode: 'cover',
+    alignSelf: 'center',
+  },
+  cardContent: {
+    padding: 10,
+  },
+  cardTitle: {
+    margin:10,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+  },
 });
 
 export default assignmentStyle;

@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
+import assignmentStyle from '../styles/styles';
 
 interface submitButtonParams {
   title: string;
@@ -7,18 +8,10 @@ interface submitButtonParams {
 }
 const SubmitButtonComponent: FC<submitButtonParams> = ({title, onClick}) => {
   return (
-    <View style={submitButtonStyle.buttonStyle}>
+    <View style={assignmentStyle.buttonStyle}>
       <Button title={title} onPress={onClick} />
     </View>
   );
 };
-
-const submitButtonStyle = StyleSheet.create({
-  buttonStyle: {
-    alignSelf: 'center',
-    width: 100,
-    margin: 10,
-  },
-});
 
 export default SubmitButtonComponent;

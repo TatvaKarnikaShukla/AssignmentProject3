@@ -48,5 +48,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	  <key>NSCameraUsageDescription</key>
+  <string>Camera permission</string>
+    <key>NSCameraUsageDescription</key>
+  <string>Photo library permission</string>
 </dict>
 </plist>

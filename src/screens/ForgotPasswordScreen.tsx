@@ -42,11 +42,11 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProp> = ({
   const [otpFieldVisibility, setOtpFieldVisibility] = useState(false);
   const [passwordFieldsVisibility, setPasswordFieldVisibility] =
     useState(false);
-  const [otpValue, setOtpValue] = useState(123456);
+  const [otpValue, setOtpValue] = useState('');
   const [otpError, setOtpError] = useState(false);
   const [otpErrorMsg, setOtpErrorMsg] = useState('');
   const [randomGeneratedOtpValue, setRandomGeneratedOtpValue] =
-    useState(123456);
+    useState("123456");
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
@@ -73,21 +73,24 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProp> = ({
   };
 
   const handleSendOTP = () => {
-    if (!!!isEmailValid) {
+    if (!isEmailValid(email)) {
       setEmailError(true);
       setEmailErrorMsg('Invalid email address.');
       console.log("Send otp button clicked")
     } else {
-      setOtpFieldVisibility(true);
-      setSubmitButtonText(buttonType.VerifyOtp);
+        setOtpFieldVisibility(true);
+        setSubmitButtonText(buttonType.VerifyOtp);
+    
     }
   };
 
   const handleVerifyOtp = () => {
-    if (!isOtpVerified) {
+    if (!isOtpVerified()) {
       setOtpError(true);
       setOtpErrorMsg('Incorrect OTP.');
     } else {
+      setOtpFieldVisibility(false);
+      setPasswordFieldVisibility(true);
       setSubmitButtonText(buttonType.ResetPassword);
     }
   };
@@ -108,18 +111,19 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProp> = ({
   };
 
   const handleSubmitButtonClick = () => {
+    console.log("Button Text "+ submitButtonText)
     switch (submitButtonText) {
       case buttonType.ResetPassword:
-        handleResetPassword;
+        handleResetPassword();
         break;
       case buttonType.SendOtpButton:
-        handleSendOTP;
+        handleSendOTP();
         break;
       case buttonType.VerifyOtp:
-        handleVerifyOtp;
+        handleVerifyOtp();
         break;
       default:
-        handleResetPassword;
+        handleResetPassword();
         break;
     }
   };
@@ -131,6 +135,15 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProp> = ({
     }else{
         setEmail(email)
     }
+}
+
+function handleOtpChange (otp: string) {
+  if(otp.length == 0){
+    setOtpError(true)
+    setOtpErrorMsg("*Enter valid otp.")
+  }else{
+    setOtpValue(otp)
+  }
 }
 
   return (
@@ -163,6 +176,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProp> = ({
             error={emailError}
             label="OTP"
             placeholder="Enter otp"
+            onChangeText={(otp: string) => handleOtpChange(otp)}
           />
           {otpError && (
             <Text style={assignmentStyle.textInputErrorStyle}>
@@ -180,6 +194,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProp> = ({
             placeholder="Password"
             secureTextEntry={true}
             error={passwordError}
+            onChangeText={(password: string) => setPasswordValue(password)}
           />
 
           {passwordError && (
@@ -194,6 +209,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProp> = ({
             placeholder="Confirm Password"
             secureTextEntry={true}
             error={confirmPasswordError}
+            onChangeText={(password: string) => setConfirmPasswordValue(password)}
           />
 
           {confirmPasswordError && (

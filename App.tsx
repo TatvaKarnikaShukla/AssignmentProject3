@@ -5,37 +5,31 @@
  * @format
  */
 
-import React, {useContext, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './src/screens/LoginScreen';
-import RegistrationScreen from './src/screens/RegistrationScreen';
-import SettingsScreen from './src/screens/SettingsScreen';
-import ProductScreen from './src/screens/ProductScreen';
-import CartScreen from './src/screens/CartScreen';
-import OrderScreen from './src/screens/OrdersScreen';
-import HomeScreen from './src/screens/HomeScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
-import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import RootStackParamList from './types/RootStackParamList';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  DrawerContent,
-  DrawerContentScrollView,
-  DrawerItemList,
   DrawerToggleButton,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import PrivacyPolicy from './src/screens/PrivacyPolicy';
 import AboutPage from './src/screens/AboutPage';
-import { Text, View } from 'react-native';
+import CartScreen from './src/screens/CartScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import OrderScreen from './src/screens/OrdersScreen';
+import PrivacyPolicy from './src/screens/PrivacyPolicy';
+import ProductScreen from './src/screens/ProductScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import RegistrationScreen from './src/screens/RegistrationScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
 
-const ScreenStack = createNativeStackNavigator<RootStackParamList>();
 const App: React.FC = () => {
   const getUserAuthenticationData = async () => {
-    const userData = await AsyncStorage.getItem('userData');
+    const userData = await AsyncStorage.getItem('UserData');
+    console.log("User data " + userData)
 
     if (userData !== null) {
       return true;
@@ -69,13 +63,6 @@ const App: React.FC = () => {
   const AuthenticatedScreens = () => {
     return (
       <Stack.Navigator initialRouteName='DrawerScreens'>
-        {/* <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Settings" component={SettingsScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Product" component={ProductScreen} />
-        <Stack.Screen name="Cart" component={CartScreen} />
-        <Stack.Screen name="Orders" component={OrderScreen} /> */}
-        {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
         <Stack.Screen name="DrawerScreens" component={DrawerScreens} options={{headerShown: false}}/>
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
         <Stack.Screen name="AboutPage" component={AboutPage} />
@@ -113,50 +100,26 @@ const App: React.FC = () => {
         <Tab.Screen
           name="Home"
           component={HomeScreen}
-          options={{headerShown: false}}
+          options={{headerShown: true, headerLeft: () => <DrawerToggleButton />}}
         />
         <Tab.Screen
           name="Profile"
           component={ProfileScreen}
-          options={{headerShown: false}}
+          options={{headerShown: true, headerLeft: () => <DrawerToggleButton />}}
         />
         <Tab.Screen
           name="Settings"
           component={SettingsScreen}
-          options={{headerShown: false}}
+          options={{headerShown: true, headerLeft: () => <DrawerToggleButton />}}
         />
       </Tab.Navigator>
     );
   };
 
   const DrawerScreens = () => {
-    const DrawerHeaderContent = (props: any) => {
-      return (
-        <DrawerContentScrollView contentContainerStyle={{flex: 1}}>
-          <View
-            style={{
-              backgroundColor: '#4f4f4f',
-              height: 100,
-              justifyContent: 'center',
-              alignItems: 'center',
-              top: -5,
-            }}>
-            <Text style={{color: '#fff'}}>Home</Text>
-          </View>
-          <DrawerItemList {...props} />
-        </DrawerContentScrollView>
-      );
-    };
     return (
-      <Drawer.Navigator
-        drawerContent={props => DrawerHeaderContent(props)}
-        screenOptions={{
-          drawerPosition: 'left',
-          headerLeft: () => <DrawerToggleButton />,
-          headerTintColor: 'black',
-          headerShown: true,
-        }}>
-         <Drawer.Screen name='TabScreens' component={TabScreens} />
+      <Drawer.Navigator>
+        <Drawer.Screen name='Home Screen' component={TabScreens} options={{headerShown: false}}/>
         <Drawer.Screen name="Product" component={ProductScreen} />
         <Drawer.Screen name="Cart" component={CartScreen} />
         <Drawer.Screen name="Orders" component={OrderScreen} />
@@ -169,8 +132,8 @@ const App: React.FC = () => {
       <Stack.Navigator
         initialRouteName={
           !authorizationState
-            ? 'UnAuthenticatedScreens'
-            : 'AuthenticatedScreens'
+            ? 'AuthenticatedScreens'
+            : 'UnAuthenticatedScreens'
         }>
         <Stack.Screen
           name="UnAuthenticatedScreens"

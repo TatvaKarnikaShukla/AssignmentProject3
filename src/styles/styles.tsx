@@ -1,10 +1,15 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
 const assignmentStyle = StyleSheet.create({
   containerStyle: {
     flex: 1,
     justifyContent: 'center',
     alignContent: 'center',
+  },
+  buttonStyle: {
+    alignSelf: 'center',
+    width: 100,
+    margin: 10,
   },
   logoImageStyle: {
     width: 80,
@@ -50,6 +55,17 @@ const assignmentStyle = StyleSheet.create({
     shadowOpacity: 0.2,
     margin: 10,
   },
+  productCardContainer: {
+    width: Dimensions.get('window').width/2 - 30,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    margin: 10,
+    alignSelf: 'center',
+  },
   cardImage: {
     width: 100,
     height: 100,
@@ -62,11 +78,43 @@ const assignmentStyle = StyleSheet.create({
     padding: 10,
   },
   cardTitle: {
-    margin:10,
+    margin: 10,
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
+    alignSelf: 'center',
   },
+  productCardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    alignSelf: 'center',
+  },
+  inputStyle: {
+    borderBottomWidth: 1,
+    marginBottom: 16,
+    padding: 8,
+    color: 'black',
+  },
+  cameraIconStyle: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    top: 0,
+    right: 130,
+    zIndex: 1,
+    left:210,
+    padding:5,
+    borderRadius: 50,
+    backgroundColor: 'white',
+    flexWrap: 'wrap',
+  },
+  profileImageStyle:{
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+  }
 });
 
 export default assignmentStyle;

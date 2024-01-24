@@ -3,8 +3,8 @@ type RootStackParamList = {
     Registration: undefined;
     ForgotPassword: undefined;
     Product: undefined,
-    Cart: undefined,
-    Orders: undefined,
+    Cart: {cartItems: ProductItem[]},
+    Orders: {orderItems: ProductItem[]},
     Home: undefined,
     Profile: undefined,
     Settings: undefined,

@@ -46,8 +46,8 @@ const LoginScreen = (props: any) => {
   const storeUserObjectToLocal = async(userData: UserData) => {
     try {
         await AsyncStorage.setItem("UserData", JSON.stringify(userData))
-        console.log('Object stored successfully!');
-        props.navigation.navigate('TabScreens');
+        console.log('Object stored successfully!' + await AsyncStorage.getItem('UserData'));
+        props.navigation.navigate('AuthenticatedScreens');
     } catch (error) {
         console.error('Error storing object:', error);
     }

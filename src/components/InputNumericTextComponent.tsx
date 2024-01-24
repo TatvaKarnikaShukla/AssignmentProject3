@@ -6,13 +6,15 @@ interface inputNumericTextComponentParams {
   label: string;
   value: string;
   placeholder: string;
-  error: boolean
+  error: boolean;
+  onChangeText: (otp: string) => void;
 }
 const InputNumericTextComponent: FC<inputNumericTextComponentParams> = ({
   label,
   value,
   placeholder,
   error,
+  onChangeText
 }) => {
   return (
     <TextInput
@@ -23,6 +25,7 @@ const InputNumericTextComponent: FC<inputNumericTextComponentParams> = ({
       style={textInputStyle.textStyle}
       error={error}
       keyboardType='number-pad'
+      onChangeText={(otp) => onChangeText(otp)}
     />
   );
 };
